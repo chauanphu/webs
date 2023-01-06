@@ -37,6 +37,7 @@ services:
     restart: unless-stopped
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - wordpress:/var/www/html
       - ./nginx-conf:/etc/nginx/conf.d
@@ -51,7 +52,7 @@ services:
     volumes:
       - certbot-etc:/etc/letsencrypt
       - wordpress:/var/www/html
-    command: certonly --webroot --webroot-path=/var/www/html --email chauanphu@gmail.com --agree-tos --no-eff-email --staging -d quanaocongnhan.com -d www.quanaocongnhan.com
+    command: certonly --webroot --webroot-path=/var/www/html --email chauanphu@gmail.com --agree-tos --no-eff-email --force-renewal -d quanaocongnhan.com -d www.quanaocongnhan.com
 volumes:
   certbot-etc:
   wordpress:
