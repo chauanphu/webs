@@ -1,23 +1,23 @@
 version: '3'
 
 services:
-  db:
+  db_quanaocongnhan:
     image: mysql:8.0
-    container_name: db
+    container_name: db_quanaocongnhan
     restart: unless-stopped
     env_file: .env
     environment:
       - MYSQL_DATABASE=wordpress
     volumes:
-      - dbdata:/var/lib/mysql
+      - db_quanaocongnhan_data:/var/lib/mysql
     command: '--default-authentication-plugin=mysql_native_password'
     networks:
-      - app-network
-  wordpress:
+      - app-network-quanaocongnhan
+  wp_quanaocongnhan:
     depends_on:
-      - db
+      - db_quanaocongnhan
     image: wordpress:6.1.1-fpm-alpine
-    container_name: wordpress
+    container_name: wp_quanaocongnhan
     restart: unless-stopped
     env_file: .env
     environment:
@@ -26,38 +26,39 @@ services:
       - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
       - WORDPRESS_DB_NAME=wordpress
     volumes:
-      - wordpress:/var/www/html
+      - ./wp_quanaocongnhan:/var/www/html
     networks:
-      - app-network
-  webserver:
+      - app-network-quanaocongnhan
+  webserver_quanaocongnhan:
     depends_on:
-      - wordpress
+      - wp_quanaocongnhan
     image: nginx:1.15.12-alpine
-    container_name: webserver
+    container_name: webserver_quanaocongnhan
     restart: unless-stopped
     ports:
-      - "80:80"
-      - "443:443"
+      - "70:80"
+      - "400:443"
     volumes:
-      - wordpress:/var/www/html
+      - ./wp_quanaocongnhan:/var/www/html
       - ./nginx-conf:/etc/nginx/conf.d
-      - certbot-etc:/etc/letsencrypt
+      - ./certbot-etc-quanaocongnhan:/etc/letsencrypt
     networks:
-      - app-network
-  certbot:
+      - app-network-quanaocongnhan
+  certbot_quanaocongnhan:
     depends_on:
-      - webserver
+      - webserver_quanaocongnhan
     image: certbot/certbot
-    container_name: certbot
+    container_name: certbot_quanaocongnhan
     volumes:
-      - certbot-etc:/etc/letsencrypt
-      - wordpress:/var/www/html
+      - ./certbot-etc-quanaocongnhan:/etc/letsencrypt
+      - ./certbot-var:/var/lib/letsencrypt
+      - ./wp_quanaocongnhan:/var/www/html
     command: certonly --webroot --webroot-path=/var/www/html --email chauanphu@gmail.com --agree-tos --no-eff-email --force-renewal -d quanaocongnhan.com -d www.quanaocongnhan.com
 volumes:
-  certbot-etc:
-  wordpress:
-  dbdata:
+  certbot-etc-quanaocongnhan:
+  wp_quanaocongnhan:
+  db_quanaocongnhan_data:
 
 networks:
-  app-network:
+  app-network-quanaocongnhan:
     driver: bridge
