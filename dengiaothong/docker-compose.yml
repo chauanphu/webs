@@ -2,51 +2,29 @@ version: '3'
 
 services:
   db_dengiaothong:
-    image: mysql:8.0
+    image: bitnami/mariadb:latest
     container_name: db_dengiaothong
     restart: unless-stopped
     env_file: .env
-    environment:
-      - MYSQL_DATABASE=wordpress
     volumes: 
-      - dbdata_dengiaothong:/var/lib/mysql
-    command: '--default-authentication-plugin=mysql_native_password'
+      - dbdata_dengiaothong:/bitnami/mariadb
 
-  wp_dengiaothong:  
+  opc_dengiaothong:  
     depends_on: 
       - db_dengiaothong
-    image: wordpress:6.1.1-fpm-alpine
-    container_name: wp_dengiaothong
+    image: bitnami/opencart:latest
+    container_name: opc_dengiaothong
     restart: unless-stopped
     env_file: .env
     environment:
-      - WORDPRESS_DB_HOST=db_dengiaothong:3306
-      - WORDPRESS_DB_USER=$MYSQL_USER
-      - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
-      - WORDPRESS_DB_NAME=wordpress
+      - OPENCART_HOST=dengiaothong.net
+      - OPENCART_DATABASE_HOST=db_dengiaothong
+      - OPENCART_DATABASE_USER=$MARIADB_USER
+      - OPENCART_DATABASE_PASSWORD=$MARIADB_PASSWORD
+      - OPENCART_DATABASE_NAME=$MARIADB_DATABASE
     volumes:
-      - ./wordpress_dengiaothong:/var/www/html
-
-  webserver_dengiaothong:
-    depends_on:
-      - wp_dengiaothong
-    image: nginx:1.15.12-alpine
-    container_name: webserver_dengiaothong
-    restart: unless-stopped
-    volumes:
-      - ./wordpress_dengiaothong:/var/www/html
-      - ./nginx-conf:/etc/nginx/conf.d
-#      - certbot-etc:/etc/letsencrypt
-
-#  certbot:
-#    depends_on:
-#      - webserver
-#    image: certbot/certbot
-#    container_name: certbot
-#    volumes:
-#      - certbot-etc:/etc/letsencrypt
-#      - wordpress:/var/www/html
-#    command: certonly --webroot --webroot-path=/var/www/html --email chauanphu@gmail.com --agree-tos --no-eff-email --staging -d dengiaothong.com -d www.dengiaothong.com
+      - ./opc_dengiaothong:/bitnami
+      - ./setup:/opt/bitnami
 
 volumes:
   dbdata_dengiaothong:
