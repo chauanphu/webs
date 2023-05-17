@@ -7,22 +7,29 @@ WORKDIR /var/www/html
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     curl \
-    libcurl4 \
-    libcurl4-openssl-dev \
-    libzip-dev \
     zip \
     unzip \
-    libpng-dev \
+    libcurl4 \
+    libcurl4-openssl-dev \
+    libgd-dev \ 
+    libjpeg-dev \
     libonig-dev \
-    libxml2-dev
+    libxml2-dev \
+    libzip-dev \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev
 
+# Set up PHP to support GD
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+
+RUN docker-php-ext-install -j$(nproc) gd
 # Install PHP extensions
 RUN docker-php-ext-install \
     pdo \
     pdo_mysql \
     curl \
     zip \
-    gd \
     mbstring \ 
     xml
 
@@ -31,6 +38,7 @@ RUN curl -SL https://github.com/opencart/opencart/releases/download/3.0.3.8/open
     && unzip opencart.zip \
     && rm opencart.zip \
     && mv upload/* . \
+    && mv upload/.htaccess.txt .htaccess \
     && rm -r upload \
     && chown -R www-data:www-data .
 
