@@ -1,34 +1,28 @@
 version: '3'
-
 services:
-  db_dengiaothong:
-    image: bitnami/mariadb:latest
-    container_name: db_dengiaothong
-    restart: unless-stopped
-    env_file: .env
-    volumes: 
-      - dbdata_dengiaothong:/bitnami/mariadb
-
-  opc_dengiaothong:  
-    depends_on: 
-      - db_dengiaothong
-    image: bitnami/opencart:latest
-    container_name: opc_dengiaothong
-    restart: unless-stopped
-    env_file: .env
-    environment:
-      - OPENCART_HOST=dengiaothong.net
-      - OPENCART_DATABASE_HOST=db_dengiaothong
-      - OPENCART_DATABASE_USER=$MARIADB_USER
-      - OPENCART_DATABASE_PASSWORD=$MARIADB_PASSWORD
-      - OPENCART_DATABASE_NAME=$MARIADB_DATABASE
+  db:
+    image: mysql:5.7
     volumes:
-      - ./opc_dengiaothong:/bitnami
-      - ./setup:/opt/bitnami
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: somewordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: 258456cap
 
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    ports:
+      - "8000:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: admin
+      WORDPRESS_DB_PASSWORD: 258456cap
+    volumes:
+      - ./wordpress:/var/lib/html/
 volumes:
-  dbdata_dengiaothong:
-
-networks:
-  default:
-    name: wp-proxy-network
+  db_data:

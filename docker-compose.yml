@@ -10,7 +10,9 @@ services:
     volumes:
       - './nginx-proxy-manager/data:/data'
       - './nginx-proxy-manager/letsencrypt:/etc/letsencrypt'
+    networks:
+      - nginx-proxy-network
+
 networks:
-  default:
-    external:
-      name: wp-proxy-network
+  nginx-proxy-network:
+    external: true

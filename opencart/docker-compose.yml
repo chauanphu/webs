@@ -1,0 +1,24 @@
+version: '3'
+services:
+  opencart:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:80
+    restart: always
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_DATABASE=opencart
+      - MYSQL_USER=opencart
+      - MYSQL_PASSWORD=opencart
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      - MYSQL_DATABASE=opencart
+      - MYSQL_USER=opencart
+      - MYSQL_PASSWORD=opencart
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - ./mysql_data:/var/lib/mysql
