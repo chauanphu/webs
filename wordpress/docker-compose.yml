@@ -1,8 +1,8 @@
 version: '3'
 services:
-  db_housenexustech:
+  db:
     image: mysql:5.7
-    container_name: db_housenexustech
+    container_name: db_{domain}
     volumes:
       - ./db_data:/var/lib/mysql
     restart: always
@@ -11,22 +11,24 @@ services:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: admin
       MYSQL_PASSWORD: 258456cap
-
-  wordpress_housenexustech:
+    networks:
+      - internal-{domain}
+  wordpress_{domain}:
     depends_on:
-      - db_housenexustech
+      - db_{domain}
     image: wordpress:latest
-    container_name: wordpress_housenexustech
+    container_name: wordpress_{domain}
     restart: always
     environment:
-      WORDPRESS_DB_HOST: db_housenexustech:3306
+      WORDPRESS_DB_HOST: db_{domain}:3306
       WORDPRESS_DB_USER: admin
       WORDPRESS_DB_PASSWORD: 258456cap
     volumes:
-      - ./wordpress:/var/lib/html/
+      - ./webdata:/var/lib/html/
     networks:
       - nginx-network
-
+      - internal-{domain}
 networks:
   nginx-network:
     external: true
+  internal-{domain}:
