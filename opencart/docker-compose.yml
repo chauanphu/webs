@@ -10,10 +10,12 @@ services:
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=1
     volumes:
-      - webdata:/var/www/html
+      - ./webdata:/var/www/html
     depends_on:
       - db_dengiaothong
-  
+    networks:
+      - nginx-network
+      - dengiaothong-network
   db_dengiaothong:
     container_name: db_dengiaothong
     image: mysql:5.7
@@ -25,3 +27,10 @@ services:
       - MYSQL_ROOT_PASSWORD=root
     volumes:
       - ./mysql_data:/var/lib/mysql
+    networks:
+      - dengiaothong-network
+networks:
+  nginx-network:
+    external: true
+  dengiaothong-network:
+    internal: true
