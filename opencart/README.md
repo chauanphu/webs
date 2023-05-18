@@ -25,4 +25,4 @@
 1. Access config.php file: `cd webdata && sudo nano config.php`
 2. Replace `<old_domain>` to `<your domain>`
 3. Exit and save
-4. Continue with admin/config.php
+4. Continue with `sudo nano admin/config.php`
