@@ -15,7 +15,7 @@
 1. Copy: `sudo cp -r <old_folder> <new_folder>`
 2. Access to new folder: `cd <new_folder>`
 3. Change ownership of mysql_data to 999:www-data: `sudo chown -R 999:www-data ./mysql_data`
-4. Change ownership of webdata to www-data:www-data: `sudo chown -R www-data:www-data ./mysql_data`
+4. Change ownership of webdata to www-data:www-data: `sudo chown -R www-data:www-data ./webdata`
 5. Change ownership of docker-compose.yml to current user: `sudo chown -R ${USER}:${USER} docker-compose.yml`
 ### Step 2: Access and change the domain in docker-compose.yml:
 1. Access docker-compose.yml file: `nano docker-compose.yml`
