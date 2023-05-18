@@ -6,9 +6,9 @@ services:
     restart: unless-stopped
     environment:
       - MYSQL_HOST=db
-      - MYSQL_DATABASE=opencart
-      - MYSQL_USER=admin
-      - MYSQL_PASSWORD=1
+      - MYSQL_DATABASE=${DATABASE}
+      - MYSQL_USER=${DATABASE_USER}
+      - MYSQL_PASSWORD=${DATABASE_PASSWORD}
     volumes:
       - data-volume:/var/www/html
     depends_on:
@@ -22,9 +22,9 @@ services:
     restart: always
     environment:
       - MYSQL_DATABASE=opencart
-      - MYSQL_USER=admin
-      - MYSQL_PASSWORD=1
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=${DATABASE_USER}
+      - MYSQL_PASSWORD=${DATABASE_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DATABASE_PASSWORD_ROOT}
     volumes:
       - ./mysql_data:/var/lib/mysql
     networks:

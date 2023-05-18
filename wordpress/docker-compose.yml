@@ -7,10 +7,10 @@ services:
       - ./db_data:/var/lib/mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: somewordpress
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: 258456cap
+      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASS}
+      MYSQL_DATABASE: ${DATABASE}
+      MYSQL_USER: ${DATABASE_USER}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
     networks:
       - internal-{domain}
   wordpress_{domain}:
@@ -20,9 +20,9 @@ services:
     container_name: wordpress_{domain}
     restart: always
     environment:
-      WORDPRESS_DB_HOST: db_{domain}:3306
-      WORDPRESS_DB_USER: admin
-      WORDPRESS_DB_PASSWORD: 258456cap
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: ${DATABASE_USER}
+      WORDPRESS_DB_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
       - ./webdata:/var/lib/html/
     networks:
