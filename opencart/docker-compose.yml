@@ -1,23 +1,23 @@
 version: '3'
 services:
-  opencart_dengiaothong:
+  opencart_{domain}:
     image: chauanphu/opencart:1.0.2
-    container_name: opencart_dengiaothong
-    restart: always
+    container_name: opencart_{domain}
+    restart: unless-stopped
     environment:
-      - MYSQL_HOST=db_dengiaothong
+      - MYSQL_HOST=db
       - MYSQL_DATABASE=opencart
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=1
     volumes:
-      - ./webdata:/var/www/html
+      - data-volume:/var/www/html
     depends_on:
-      - db_dengiaothong
+      - db
     networks:
       - nginx-network
-      - dengiaothong-network
-  db_dengiaothong:
-    container_name: db_dengiaothong
+      - internal-{domain}
+  db:
+    container_name: db_{domain}
     image: mysql:5.7
     restart: always
     environment:
@@ -28,9 +28,17 @@ services:
     volumes:
       - ./mysql_data:/var/lib/mysql
     networks:
-      - dengiaothong-network
+      - internal-{domain}
+
+volumes:
+  data-volume:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./webdata
+
 networks:
   nginx-network:
     external: true
-  dengiaothong-network:
-    internal: true
+  internal-{domain}:
