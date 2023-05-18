@@ -26,3 +26,6 @@
 2. Replace `<old_domain>` to `<your domain>`
 3. Exit and save
 4. Continue with `sudo nano admin/config.php`
+### Step 4: Run the stack:
+1. Access back to folder `{new_foler}/`
+2. Run: `docker-compose up -d`
