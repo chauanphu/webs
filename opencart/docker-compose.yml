@@ -1,0 +1,27 @@
+version: '3'
+services:
+  opencart_dengiaothong:
+    image: chauanphu/opencart:1.0.2
+    container_name: opencart_dengiaothong
+    restart: always
+    environment:
+      - MYSQL_HOST=db_dengiaothong
+      - MYSQL_DATABASE=opencart
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=1
+    volumes:
+      - webdata:/var/www/html
+    depends_on:
+      - db_dengiaothong
+  
+  db_dengiaothong:
+    container_name: db_dengiaothong
+    image: mysql:5.7
+    restart: always
+    environment:
+      - MYSQL_DATABASE=opencart
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=1
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - ./mysql_data:/var/lib/mysql
