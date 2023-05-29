@@ -38,15 +38,16 @@
 1. Go to Description.php of Divi: `wp-content/themes/Divi/includes/builder/module/woocommerce/Description.php`
 2. Go to the short description: `woocommerce_short_description`
 3. Edit it with this following code `
-4. global $product; // Delete if error
-			`$attributes = $product->get_attributes();
-			if (!empty($attributes)) {
-				$attribute_text = '';
-				foreach ($attributes as $attribute) {
-					$attribute_name = $attribute->get_name();
-					$attribute_value = $attribute->get_options();
-					$attribute_text .= '✅ <strong>' . $attribute_name . ':</strong> ' . implode(', ', $attribute_value) . '<br>';
-				}
-			} // Delete if error
-			$description = apply_filters( 'woocommerce_short_description', $attribute_text /*$post->post_excerpt*/ );`
+4. global $product; // Delete if error:
+
+``$attributes = $product->get_attributes();
+if (!empty($attributes)) {
+	$attribute_text = '';
+	foreach ($attributes as $attribute) {
+	$attribute_name = $attribute->get_name();
+	$attribute_value = $attribute->get_options();
+	$attribute_text .= '✅ <strong>' . $attribute_name . ':</strong> ' . implode(', ', $attribute_value) . '<br>';
+}
+} // Delete if error
+$description = apply_filters( 'woocommerce_short_description', $attribute_text /*$post->post_excerpt*/ );``
       
