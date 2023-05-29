@@ -37,9 +37,9 @@
 ## Customize the short description to display the attributes
 1. Go to Description.php of Divi: `wp-content/themes/Divi/includes/builder/module/woocommerce/Description.php`
 2. Go to the short description: `woocommerce_short_description`
-3. Edit it with this following code `global $product; // Delete if error
-			$attributes = $product->get_attributes();
-
+3. Edit it with this following code `
+4. global $product; // Delete if error
+			`$attributes = $product->get_attributes();
 			if (!empty($attributes)) {
 				$attribute_text = '';
 				foreach ($attributes as $attribute) {
