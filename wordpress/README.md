@@ -32,3 +32,9 @@
 ### Step 4: Run the stack:
 1. Access back to folder `{new_foler}/`
 2. Run: `docker-compose up -d`
+
+
+## Customize the short description to display the attributes
+1. Go to Description.php of Divi: `wp-content/themes/Divi/includes/builder/module/woocommerce/Description.php`
+2. Go to the short description: `woocommerce_short_description`
+3. Edit it
