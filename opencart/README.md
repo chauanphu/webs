@@ -29,3 +29,6 @@
 ### Step 4: Run the stack:
 1. Access back to folder `{new_foler}/`
 2. Run: `docker-compose up -d`
+
+## **Logs**
+`docker logs -f --tail 3 opencart_{domain}`
