@@ -1,8 +1,8 @@
 version: '3'
 services:
-  opencart_{domain}:
+  opencart_dengiaothong:
     image: chauanphu/opencart:4.0.2.1
-    container_name: opencart_{domain}
+    container_name: opencart_dengiaothong
     restart: unless-stopped
     environment:
       - MYSQL_HOST=db
@@ -15,9 +15,9 @@ services:
       - db
     networks:
       - nginx-network
-      - internal-{domain}
+      - internal-dengiaothong
   db:
-    container_name: db_{domain}
+    container_name: db_dengiaothong
     image: mysql:5.7
     restart: always
     environment:
@@ -28,7 +28,7 @@ services:
     volumes:
       - ./mysql_data:/var/lib/mysql
     networks:
-      - internal-{domain}
+      - internal-dengiaothong
 
 volumes:
   data-volume:
@@ -41,4 +41,4 @@ volumes:
 networks:
   nginx-network:
     external: true
-  internal-{domain}:
+  internal-dengiaothong:

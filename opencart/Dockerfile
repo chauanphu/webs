@@ -1,5 +1,5 @@
 # Use the official PHP 7.4 Apache base image
-FROM php:7.4-apache
+FROM php:8.2-apache
 
 # Set the working directory to /var/www/html
 WORKDIR /var/www/html
@@ -37,15 +37,16 @@ RUN docker-php-ext-install \
 RUN curl -SL https://github.com/opencart/opencart/releases/download/3.0.3.8/opencart-3.0.3.8.zip -o opencart.zip \
     && unzip opencart.zip \
     && rm opencart.zip \
-    && mv upload/* . \
     && mv upload/.htaccess.txt .htaccess \
+    && mv upload/* . \
+    # Remove upload and  opencart-3.0.3.8 folder
     && rm -r upload \
-    && chown -R www-data:www-data .
-
-# Create symbolic links from config.php to config-dist.php
-RUN ln -sf config-dist.php config.php && \
-    ln -sf config-dist.php admin/config.php
-    
+    # Rename some file
+    && mv config-dist.php config.php \
+    && mv admin/config-dist.php admin/config.php \
+    # Set owner ship
+    && chown -R www-data:www-data . \
+    && chmod 0777 config.php && chmod 0777 admin/config.php
 # Enable Apache rewrite module
 RUN a2enmod rewrite
 
